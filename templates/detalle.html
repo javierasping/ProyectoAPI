@@ -1,0 +1,28 @@
+{%extends "base.html" %}
+
+{%block tittle%}{{ juego.nombre }}{%endblock%}
+{%block titulo%}{{ juego.nombre }}{%endblock%}
+{%block contenido%}
+
+
+<p>Id: {{ juego.id }}</p>
+<p>Nombre: {{ juego.nombre }}</p>
+<p>Sistema: {{ juego.sistema }}</p>
+<p>Desarrollador: {{ juego.desarrollador }}</p>
+<p>Distribuidor: {{ juego.distribuidor }}</p>
+<p>Año: {{ juego.año }}</p>
+<p>Categoria: {{ juego.categoria }}</p>
+
+
+<a href="javascript:history.back()"> Volver Atrás</a>
+
+
+
+      
+
+
+
+
+{%endblock%}
+
+

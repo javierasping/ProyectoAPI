@@ -1,0 +1,73 @@
+{%extends "base.html" %}
+
+{%block tittle%}Juegos{%endblock%}
+{%block titulo%}Juegos{%endblock%}
+{%block contenido%}
+<form method="post" action="{{ url_for('juegosV2') }}">
+  <input type="text" name="search_query" placeholder="Buscar juego..." value="{{ search_query }}">
+  <button type="submit">Buscar</button>
+  <select name="categoria_query">
+    <option value="Racing">Racing</option>
+    <option value="Sports">Sports</option>
+    <option value="Shooter">Shooter</option>
+    <option value="Adventure">Adventure</option>
+    <option value="Action">Action</option>
+    <option value="Simulation">Simulation</option>
+    <option value="Strategy">Strategy</option>
+    <option value="Role-Playing">Role-Playing</option>
+    <option value="Arcade">Arcade</option>
+    <option value="">Ninguna</option>
+
+
+
+
+</select>
+</form>
+
+<br>
+
+
+<table class="tabla">
+  <thead>
+      <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Desarrollador</th>
+          <th>Detalle</th>
+      </tr>
+  </thead>
+  <tbody>
+      {% if juegos %}
+        {% for juego in juegos %}
+          <tr>
+              <td>{{ juego.id }}</td>
+              <td>{{ juego.nombre }}</td>
+              <td>{{ juego.desarrollador }}</td>
+              <td><a href="\juego\{{ juego.id }}">Detalle</a></td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="4">No se encontraron juegos</td>
+        </tr>
+      {% endif %}
+  </tbody>
+</table>
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+{%endblock%}
+
+

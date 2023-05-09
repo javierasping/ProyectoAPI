@@ -1,0 +1,39 @@
+{%extends "base.html" %}
+
+{%block tittle%}Lista Juegos{%endblock%}
+{%block titulo%}Lista Juegos{%endblock%}
+{%block contenido%}
+
+
+    <table class="tabla">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Desarrollador</th>
+                <th>Detalle</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for juego in juegos %}
+            <tr>
+                <td>{{ juego.id }}</td>
+                <td>{{ juego.nombre }}</td>
+                <td>{{ juego.desarrollador }}</td>
+                <td><a href="\juego\{{ juego.id }}">Detalle</a></td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+      
+
+</body>
+
+
+
+{%endblock%}
+
+
