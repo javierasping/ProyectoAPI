@@ -18,16 +18,15 @@ def juegos():
 
 @app.route('/listajuegos', methods=["POST"])
 def listajuegos():
-    nombre_juego = request.form.get("busqueda")
-    with open('juegos.json') as f:
-        juegos = json.load(f)
+    search_query = request.form.get('search_query')
+    categoria_query = request.form.get('categoria_query')
 
-
+    respuesta = requests.get(url)
+    juegos= respuesta.json()
+    
     lista_juegos_a_mostrar = []
-    for juego in juegos:
-        if nombre_juego and str(juego["nombre"]).lower().startswith(str(nombre_juego).lower()):
-                lista_juegos_a_mostrar.append(juego)
-        elif not nombre_juego:
+    for juego in juegos['data']['results']:
+        if search_query and search_query.lower() not in juego['name'].lower():
             lista_juegos_a_mostrar.append(juego)
 
     return render_template('listajuegos.html', juegos=lista_juegos_a_mostrar)
@@ -48,25 +47,27 @@ def juego(id):
 @app.route('/juegosV2', methods=['GET', 'POST'])
 def juegosV2():
     search_query = request.form.get('search_query')
-    categoria_query = request.form.get('categoria_query')
-
     respuesta = requests.get(url)
-    juegos= respuesta.json()
-    
-    lista_juegos_a_mostrar = []
-    for juego in juegos:
-        if search_query and str(juego["nombre"]).lower().startswith(str(search_query).lower()):
-            if categoria_query and str(juego["categoria"]).lower() == str(categoria_query).lower():
-                lista_juegos_a_mostrar.append(juego)
-            elif not categoria_query:
-                lista_juegos_a_mostrar.append(juego)
-        elif not search_query:
-            if categoria_query and str(juego["categoria"]).lower() == str(categoria_query).lower():
-                lista_juegos_a_mostrar.append(juego)
-            elif not categoria_query:
-                lista_juegos_a_mostrar.append(juego)
+    juegos = respuesta.json()
 
-    return render_template('juegos_V2.html', juegos=lista_juegos_a_mostrar, search_query=search_query, categoria_query=categoria_query)
+    lista_juegos_a_mostrar = []
+    for juego in juegos['data']['results']:
+            lista_juegos_a_mostrar.append(juego)
+
+
+    # for juego in juegos:
+    #     if search_query and str(juego["nombre"]).lower().startswith(str(search_query).lower()):
+    #         if categoria_query and str(juego["categoria"]).lower() == str(categoria_query).lower():
+    #             lista_juegos_a_mostrar.append(juego)
+    #         elif not categoria_query:
+    #             lista_juegos_a_mostrar.append(juego)
+    #     elif not search_query:
+    #         if categoria_query and str(juego["categoria"]).lower() == str(categoria_query).lower():
+    #             lista_juegos_a_mostrar.append(juego)
+    #         elif not categoria_query:
+    #             lista_juegos_a_mostrar.append(juego)
+
+    return render_template('juegos_V2.html', juegos=lista_juegos_a_mostrar, search_query=search_query)
 
 
 

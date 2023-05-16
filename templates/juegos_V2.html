@@ -32,7 +32,6 @@
       <tr>
           <th>ID</th>
           <th>Nombre</th>
-          <th>Desarrollador</th>
           <th>Detalle</th>
       </tr>
   </thead>
@@ -41,9 +40,8 @@
         {% for juego in juegos %}
           <tr>
               <td>{{ juego.id }}</td>
-              <td>{{ juego.nombre }}</td>
-              <td>{{ juego.desarrollador }}</td>
-              <td><a href="\juego\{{ juego.id }}">Detalle</a></td>
+              <td>{{ juego.name }}</td>
+              <td><a href="https://gateway.marvel.com:443/v1/public/characters/{{ juego.id }}?apikey=1bf075d536f284d8d6c923c4b425be90&hash=5c4fcf5b8e5af6439488993f74000916&ts=1684239839.016359">Detalle</a></td>
           </tr>
         {% endfor %}
       {% else %}

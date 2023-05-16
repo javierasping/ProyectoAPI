@@ -13,7 +13,7 @@ hash = hashlib.md5(hash_string.encode()).hexdigest()
 url = f"https://gateway.marvel.com/v1/public/characters?apikey={PUBLIC_KEY}&hash={hash}&ts={timestamp}"
 url2 = f"https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=I&orderBy=name&limit=5&apikey={PUBLIC_KEY}&hash={hash}&ts={timestamp}"
 url3 = f"https://gateway.marvel.com:443/v1/public/series?apikey={PUBLIC_KEY}&hash={hash}&ts={timestamp}"
-url4 = f"https://gateway.marvel.com:443/v1/public/stories?limit=1&apikey={PUBLIC_KEY}&hash={hash}&ts={timestamp}"
+url4 = f"https://gateway.marvel.com:443/v1/public/characters/1011334?apikey={PUBLIC_KEY}&hash={hash}&ts={timestamp}"
 
 print(url)
 print(url2)
