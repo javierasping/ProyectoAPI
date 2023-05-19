@@ -3,7 +3,7 @@
 {% block title %}Juegos{% endblock %}
 {% block titulo %}Juegos{% endblock %}
 {% block contenido %}
-<form method="post" action="{{ url_for('juegosV2') }}">
+<form method="post" action="{{ url_for('personajesV2') }}">
   <input type="text" name="search_query" placeholder="Buscar juego..." value="{{ search_query }}" onchange="this.form.submit()">
   <button type="submit">Buscar</button>
 </form>

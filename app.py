@@ -9,9 +9,9 @@ url = "https://gateway.marvel.com/v1/public/characters?apikey=1bf075d536f284d8d6
 def inicio():
     return render_template("index.html")
 
-@app.route('/juegos')
-def juegos():
-    return render_template("juegos.html")
+@app.route('/personajes')
+def personajes():
+    return render_template("personajes.html")
 
 
 
@@ -37,8 +37,8 @@ def listapersonajes():
 
 
 
-@app.route('/juegosV2', methods=['GET', 'POST'])
-def juegosV2():
+@app.route('/personajesV2', methods=['GET', 'POST'])
+def personajesV2():
     search_query = request.form.get('search_query')
     respuesta = requests.get(url)
     personajes = respuesta.json()
@@ -51,7 +51,7 @@ def juegosV2():
     else:
         lista_personajes_a_mostrar = personajes['data']['results']
 
-    return render_template('juegos_V2.html', personajes=lista_personajes_a_mostrar, search_query=search_query)
+    return render_template('personajes_V2.html', personajes=lista_personajes_a_mostrar, search_query=search_query)
 
 
 @app.route('/detalle/<personaje_id>')
@@ -63,15 +63,32 @@ def detalle(personaje_id):
     if detalle_personaje['data']['results']:
         personaje = detalle_personaje['data']['results'][0]
 
-        # Obtener listas de comics, series, historias y eventos
-        comics = [comic['name'] for comic in personaje['comics']['items']]
-        series = [serie['name'] for serie in personaje['series']['items']]
-        historias = [historia['name'] for historia in personaje['stories']['items']]
-        eventos = [evento['name'] for evento in personaje['events']['items']]
+        # https://developer.marvel.com/documentation/images
+        thumbnail_path = personaje['thumbnail']['path']
+        thumbnail_extension = personaje['thumbnail']['extension']
+        imagen_personaje = f"{thumbnail_path}/standard_fantastic.{thumbnail_extension}"
 
-        return render_template('detalle.html', personaje=personaje, comics=comics, series=series, historias=historias, eventos=eventos)
+        comics = []
+        for comic in personaje['comics']['items']:
+            comics.append(comic['name'])
+
+        series = []
+        for serie in personaje['series']['items']:
+            series.append(serie['name'])
+
+        historias = []
+        for historia in personaje['stories']['items']:
+            historias.append(historia['name'])
+
+        eventos = []
+        for evento in personaje['events']['items']:
+            eventos.append(evento['name'])
+
+        return render_template('detalle.html', personaje=personaje, imagen_personaje=imagen_personaje, comics=comics, series=series, historias=historias, eventos=eventos)
     else:
         return render_template('error.html', mensaje="No se encontró información del personaje")
+
+
 
 
 
