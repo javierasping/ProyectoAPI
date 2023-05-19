@@ -1,27 +1,27 @@
-{%extends "base.html" %}
+{% extends "base.html" %}
 
-{%block tittle%}Juegos{%endblock%}
-{%block titulo%}Juegos{%endblock%}
-{%block contenido%}
-<form action="/listajuegos" method="post">
-    <label for="busqueda">Buscar juego:</label>
+{% block title %}Personajes{% endblock %}
+{% block titulo %}Personajes{% endblock %}
+{% block contenido %}
+<form action="/listapersonajes" method="post">
+    <label for="busqueda">Buscar personaje:</label>
     <input type="text" name="busqueda" id="busqueda">
     <input type="submit" value="Buscar">
-  </form>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}
 
-{%endblock%}
 
 

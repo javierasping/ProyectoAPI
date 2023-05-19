@@ -1,28 +1,50 @@
-{%extends "base.html" %}
+{% extends "base.html" %}
 
-{%block tittle%}{{ juego.nombre }}{%endblock%}
-{%block titulo%}{{ juego.nombre }}{%endblock%}
-{%block contenido%}
+{% block titulo %}{{ personaje.name }}{% endblock %}
 
+{% block contenido %}
+  <div class="detalle-personaje">
+    <h2>{{ personaje.name }}</h2>
+    <img src="{{ personaje.thumbnail.path }}/standard_fantastic.{{ personaje.thumbnail.extension }}" alt="{{ personaje.name }}">
 
-<p>Id: {{ juego.id }}</p>
-<p>Nombre: {{ juego.nombre }}</p>
-<p>Sistema: {{ juego.sistema }}</p>
-<p>Desarrollador: {{ juego.desarrollador }}</p>
-<p>Distribuidor: {{ juego.distribuidor }}</p>
-<p>Año: {{ juego.año }}</p>
-<p>Categoria: {{ juego.categoria }}</p>
+    <h3>Descripción</h3>
+    <p>{{ personaje.description }}</p>
 
+    <h3>Comics</h3>
+    <ul>
+      {% for comic in comics %}
+        <li>{{ comic }}</li>
+      {% endfor %}
+    </ul>
+    
+    <h3>Series</h3>
+    <ul>
+      {% for serie in series %}
+        <li>{{ serie }}</li>
+      {% endfor %}
+    </ul>
+    
+    <h3>Historias</h3>
+    <ul>
+      {% for historia in historias %}
+        <li>{{ historia }}</li>
+      {% endfor %}
+    </ul>
+    
+    <h3>Eventos</h3>
+    <ul>
+      {% for evento in eventos %}
+        <li>{{ evento }}</li>
+      {% endfor %}
+    </ul>
+    
 
-<a href="javascript:history.back()"> Volver Atrás</a>
-
-
-
-      
-
-
-
-
-{%endblock%}
-
+    <h3>Enlaces</h3>
+    <ul>
+      {% for url in personaje.urls %}
+        <li><a href="{{ url.url }}">{{ url.type }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
 

@@ -1,15 +1,10 @@
-{% extends "base.html" %}
+{%extends "base.html" %}
 
-{% block title %}Juegos{% endblock %}
-{% block titulo %}Juegos{% endblock %}
-{% block contenido %}
-<form method="post" action="{{ url_for('juegosV2') }}">
-  <input type="text" name="search_query" placeholder="Buscar juego..." value="{{ search_query }}" onchange="this.form.submit()">
-  <button type="submit">Buscar</button>
-</form>
+{%block tittle%}Lista Personajes{%endblock%}
+{%block titulo%}Lista Personajes{%endblock%}
+{%block contenido%}
 
 
-<br>
 
 <table class="tabla">
   <thead>
@@ -26,7 +21,7 @@
               <td>{{ personaje.id }}</td>
               <td>{{ personaje.name }}</td>
               <td><a href="{{ url_for('detalle', personaje_id=personaje.id) }}">Detalle</a></td>
-            </tr>
+          </tr>
         {% endfor %}
       {% else %}
         <tr>
@@ -36,19 +31,7 @@
   </tbody>
 </table>
 
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+
 
 {%endblock%}
 

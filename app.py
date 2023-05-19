@@ -13,34 +13,27 @@ def inicio():
 def juegos():
     return render_template("juegos.html")
 
-# respuesta = requests.get(url)
-# respuesta_json= respuesta.json()
 
-@app.route('/listajuegos', methods=["POST"])
-def listajuegos():
-    search_query = request.form.get('search_query')
-    categoria_query = request.form.get('categoria_query')
+
+@app.route('/listapersonajes', methods=["POST"])
+def listapersonajes():
+    search_query = request.form.get('busqueda')
 
     respuesta = requests.get(url)
-    juegos= respuesta.json()
-    
-    lista_juegos_a_mostrar = []
-    for juego in juegos['data']['results']:
-        if search_query and search_query.lower() not in juego['name'].lower():
-            lista_juegos_a_mostrar.append(juego)
+    personajes = respuesta.json()
 
-    return render_template('listajuegos.html', juegos=lista_juegos_a_mostrar)
-    
+    lista_personajes_a_mostrar = []
+    if search_query:
+        for personaje in personajes['data']['results']:
+            if search_query.lower() in personaje['name'].lower():
+                lista_personajes_a_mostrar.append(personaje)
+    else:
+        lista_personajes_a_mostrar = personajes['data']['results']
+
+    return render_template('listapersonajes.html', personajes=lista_personajes_a_mostrar)
 
 
-@app.route('/juego/<int:id>')
-def juego(id):
-    with open('juegos.json') as f:
-        juegos = json.load(f)
-    for juego in juegos:
-        if juego['id'] == id:
-            return render_template('detalle.html', juego=juego)
-    abort(404)
+
 
 
 
@@ -48,26 +41,38 @@ def juego(id):
 def juegosV2():
     search_query = request.form.get('search_query')
     respuesta = requests.get(url)
-    juegos = respuesta.json()
+    personajes = respuesta.json()
 
-    lista_juegos_a_mostrar = []
-    for juego in juegos['data']['results']:
-            lista_juegos_a_mostrar.append(juego)
+    lista_personajes_a_mostrar = []
+    if search_query:
+        for personaje in personajes['data']['results']:
+            if search_query.lower() in personaje['name'].lower():
+                lista_personajes_a_mostrar.append(personaje)
+    else:
+        lista_personajes_a_mostrar = personajes['data']['results']
+
+    return render_template('juegos_V2.html', personajes=lista_personajes_a_mostrar, search_query=search_query)
 
 
-    # for juego in juegos:
-    #     if search_query and str(juego["nombre"]).lower().startswith(str(search_query).lower()):
-    #         if categoria_query and str(juego["categoria"]).lower() == str(categoria_query).lower():
-    #             lista_juegos_a_mostrar.append(juego)
-    #         elif not categoria_query:
-    #             lista_juegos_a_mostrar.append(juego)
-    #     elif not search_query:
-    #         if categoria_query and str(juego["categoria"]).lower() == str(categoria_query).lower():
-    #             lista_juegos_a_mostrar.append(juego)
-    #         elif not categoria_query:
-    #             lista_juegos_a_mostrar.append(juego)
+@app.route('/detalle/<personaje_id>')
+def detalle(personaje_id):
+    detalle_url = f"https://gateway.marvel.com:443/v1/public/characters/{personaje_id}?apikey=1bf075d536f284d8d6c923c4b425be90&hash=5c4fcf5b8e5af6439488993f74000916&ts=1684239839.016359"
+    respuesta = requests.get(detalle_url)
+    detalle_personaje = respuesta.json()
 
-    return render_template('juegos_V2.html', juegos=lista_juegos_a_mostrar, search_query=search_query)
+    if detalle_personaje['data']['results']:
+        personaje = detalle_personaje['data']['results'][0]
+
+        # Obtener listas de comics, series, historias y eventos
+        comics = [comic['name'] for comic in personaje['comics']['items']]
+        series = [serie['name'] for serie in personaje['series']['items']]
+        historias = [historia['name'] for historia in personaje['stories']['items']]
+        eventos = [evento['name'] for evento in personaje['events']['items']]
+
+        return render_template('detalle.html', personaje=personaje, comics=comics, series=series, historias=historias, eventos=eventos)
+    else:
+        return render_template('error.html', mensaje="No se encontró información del personaje")
+
 
 
 
