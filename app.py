@@ -1,5 +1,4 @@
-import requests
-import json
+import requests,json
 from flask import Flask, render_template, abort, redirect, request
 
 app = Flask(__name__)
@@ -17,15 +16,15 @@ def personajes():
 
 @app.route('/listapersonajes', methods=["POST"])
 def listapersonajes():
-    search_query = request.form.get('busqueda')
+    buscar_personaje = request.form.get('busqueda')
 
     respuesta = requests.get(url)
     personajes = respuesta.json()
 
     lista_personajes_a_mostrar = []
-    if search_query:
+    if buscar_personaje:
         for personaje in personajes['data']['results']:
-            if search_query.lower() in personaje['name'].lower():
+            if buscar_personaje.lower() in personaje['name'].lower():
                 lista_personajes_a_mostrar.append(personaje)
     else:
         lista_personajes_a_mostrar = personajes['data']['results']
@@ -35,23 +34,39 @@ def listapersonajes():
 
 
 
-
-
 @app.route('/personajesV2', methods=['GET', 'POST'])
 def personajesV2():
-    search_query = request.form.get('search_query')
+    buscar_personaje = request.form.get('buscar_personaje')
+    año_filtro = request.form.get('año_filtro')
+
     respuesta = requests.get(url)
     personajes = respuesta.json()
 
     lista_personajes_a_mostrar = []
-    if search_query:
+    lista_años = []
+    if buscar_personaje or año_filtro:
         for personaje in personajes['data']['results']:
-            if search_query.lower() in personaje['name'].lower():
+            nombre = personaje['name'].lower()
+            año = personaje['modified'][:4]
+            
+            if (not buscar_personaje or nombre.startswith(buscar_personaje.lower())) and (not año_filtro or año == año_filtro):
                 lista_personajes_a_mostrar.append(personaje)
+                
+                if año not in lista_años:
+                    lista_años.append(año)
     else:
-        lista_personajes_a_mostrar = personajes['data']['results']
+        for personaje in personajes['data']['results']:
+            lista_personajes_a_mostrar.append(personaje)
+            año = personaje['modified'][:4]
+            
+            if año not in lista_años:
+                lista_años.append(año)
 
-    return render_template('personajes_V2.html', personajes=lista_personajes_a_mostrar, search_query=search_query)
+    lista_años.sort()
+
+    return render_template('personajes_V2.html', personajes=lista_personajes_a_mostrar, años=lista_años, buscar_personaje=buscar_personaje, año_filtro=año_filtro)
+
+
 
 
 @app.route('/detalle/<personaje_id>')
@@ -64,9 +79,9 @@ def detalle(personaje_id):
         personaje = detalle_personaje['data']['results'][0]
 
         # https://developer.marvel.com/documentation/images
-        thumbnail_path = personaje['thumbnail']['path']
-        thumbnail_extension = personaje['thumbnail']['extension']
-        imagen_personaje = f"{thumbnail_path}/standard_fantastic.{thumbnail_extension}"
+        ruta_imagen = personaje['thumbnail']['path']
+        extension_imagen = personaje['thumbnail']['extension']
+        imagen_personaje = f"{ruta_imagen}/standard_fantastic.{extension_imagen}"
 
         comics = []
         for comic in personaje['comics']['items']:
@@ -85,8 +100,6 @@ def detalle(personaje_id):
             eventos.append(evento['name'])
 
         return render_template('detalle.html', personaje=personaje, imagen_personaje=imagen_personaje, comics=comics, series=series, historias=historias, eventos=eventos)
-    else:
-        return render_template('error.html', mensaje="No se encontró información del personaje")
 
 
 
@@ -98,4 +111,4 @@ def detalle(personaje_id):
 def error():
     return abort(404)
 
-app.run("0.0.0.0", 5000, debug=True)
+app.run("0.0.0.0", 15000, debug=True)
