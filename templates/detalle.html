@@ -14,28 +14,28 @@
     <h3>Comics</h3>
     <ul>
       {% for comic in comics %}
-        <li>{{ comic }}</li>
+        <p>{{ comic }}</p>
       {% endfor %}
     </ul>
     
     <h3>Series</h3>
     <ul>
       {% for serie in series %}
-        <li>{{ serie }}</li>
+        <p>{{ serie }}</p>
       {% endfor %}
     </ul>
     
     <h3>Historias</h3>
     <ul>
       {% for historia in historias %}
-        <li>{{ historia }}</li>
+        <p>{{ historia }}</p>
       {% endfor %}
     </ul>
     
     <h3>Eventos</h3>
     <ul>
       {% for evento in eventos %}
-        <li>{{ evento }}</li>
+        <p>{{ evento }}</p>
       {% endfor %}
     </ul>
     
@@ -43,7 +43,7 @@
     <h3>Enlaces</h3>
     <ul>
       {% for url in personaje.urls %}
-        <li><a href="{{ url.url }}">{{ url.type }}</a></li>
+        <p><a href="{{ url.url }}">{{ url.type }}</a></p>
       {% endfor %}
     </ul>
   </div>
