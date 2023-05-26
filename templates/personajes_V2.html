@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Juegos{% endblock %}
-{% block titulo %}Juegos{% endblock %}
+{% block title %}Personajes dinamico{% endblock %}
+{% block titulo %}Personajes{% endblock %}
 {% block contenido %}
 <form method="post" action="{{ url_for('personajesV2') }}">
-  <input type="text" name="buscar_personaje" placeholder="Buscar juego..." value="{{ search_query }}" onkeyup="actualizarFormulario(event)">
+  <input type="text" name="buscar_personaje" placeholder="Buscar personaje..." value="{{ search_query }}" onkeyup="actualizarFormulario(event)">
   
   <select name="año_filtro" onchange="actualizarFormulario(event)">
     <option value="">Todos los años</option>
